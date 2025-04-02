@@ -1,0 +1,27 @@
+name: Test environment deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        bun-version: [1.2.7]
+    
+    steps:
+      uses: actions/checkout@v4
+      uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: ${{ matrix.bun-version }}
+      run: bun install
+      run: bun run build
+      use: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}}
+        publish_dir: ./dist
