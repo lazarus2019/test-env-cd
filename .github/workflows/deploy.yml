@@ -15,13 +15,22 @@ jobs:
         bun-version: [1.2.7]
     
     steps:
-      uses: actions/checkout@v4
-      uses: oven-sh/setup-bun@v2
-      with:
-        bun-version: ${{ matrix.bun-version }}
-      run: bun install
-      run: bun run build
-      use: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}}
-        publish_dir: ./dist
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ matrix.bun-version }}
+
+      - name: install
+        run: bun install
+
+      - name: build
+        run: bun run build
+
+      - name: deploy github pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}}
+          publish_dir: ./dist
