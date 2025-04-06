@@ -27,7 +27,7 @@ jobs:
         run: bun install
 
       - name: build
-        run: bun run build --mode production
+        run: bun run build --mode test
 
       - name: deploy github pages
         uses: peaceiris/actions-gh-pages@v4
