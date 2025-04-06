@@ -18,7 +18,11 @@ function App() {
       </div>
       <h1>
         Vite + React {import.meta.env.VITE_SAMPLE_ENV_VALUE}{' '}
-        {import.meta.env.MODE}
+        {import.meta.env.MODE} {import.meta.env.VITE_SECRET_VARIABLE}
+        {import.meta.env.VITE_VARIABLE}
+        --
+        {import.meta.env.SECRET_VARIABLE}
+        {import.meta.env.VARIABLE}
       </h1>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>

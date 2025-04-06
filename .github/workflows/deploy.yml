@@ -9,11 +9,13 @@ jobs:
   build-deploy:
     name: Build and deploy
     runs-on: ubuntu-latest
+    env: 
+      MODE: test
 
     strategy:
       matrix:
         bun-version: [1.2.7]
-    
+
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -25,9 +27,33 @@ jobs:
 
       - name: install
         run: bun install
+      
+      - name: Print github secrets env
+        run: echo ${{ secrets.VARIABLE_SECRET }}
+
+      - name: Print github env
+        run: echo ${{ vars.VARIABLE }}
+
+     # Step 2: Set secret variable
+      - name: Set environment secret variable
+        run: echo "VITE_SECRET_VARIABLE=${{ secrets.VARIABLE_SECRET }}" >> $GITHUB_ENV
+
+      # Step 3: Set variable from GitHub Actions variables (if using `vars`)
+      - name: Set environment GitHub variable
+        run: echo "VITE_VARIABLE=${{ vars.VARIABLE }}" >> $GITHUB_ENV
+
+      # Step 4: Print environment variables (separate steps)
+      - name: Print assigned env variable (custom)
+        run: echo "VITE_MY_ENV_VAR is $VITE_MY_ENV_VAR"
+
+      - name: Print secret env variable
+        run: echo "VITE_SECRET_VARIABLE is $VITE_SECRET_VARIABLE"
+
+      - name: Print GitHub variable
+        run: echo "VITE_VARIABLE is $VITE_VARIABLE"
 
       - name: build
-        run: bun run build --mode test
+        run: bun run build --mode $MODE
 
       - name: deploy github pages
         uses: peaceiris/actions-gh-pages@v4
